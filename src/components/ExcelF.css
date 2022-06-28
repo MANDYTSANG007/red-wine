@@ -1,0 +1,38 @@
+.ExcelF table {
+    width: 100%;
+}
+
+.ExcelF td {
+    background-color: #ffffff;
+    padding: 5px;
+    text-align: center;
+}
+
+.ExcelF th {
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;
+}
+
+.ExcelF .ExcelNotSortable {
+    cursor: default;
+}
+
+.ExcelF .ExcelEditable {
+    cursor: cell;
+}
+
+.ExcelF .ExcelEditable:hover {
+    background: #FBFBFB;
+}
+
+.ExcelF .ExcelDataLeft {
+    padding: 0 10px;
+    text-align: left;
+}
+
+.ExcelF .ExcelDataRight {
+    text-align: right;
+}
