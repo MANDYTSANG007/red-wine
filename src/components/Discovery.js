@@ -1,6 +1,5 @@
 //This is where you list all your components.
 
-// import ExcelC from './ExcelC';
 
 import './Discovery.css';
 import Logo from './Logo';
@@ -9,7 +8,7 @@ import Button from './Button';
 import Suggest from './Suggest';
 import Rating from './Rating';
 import FormInput from './FormInput';
-import Form from './Form'; // add
+import Form from './Form'; 
 import {useRef, useState} from 'react';
 import Actions from './Actions';
 import Dialog from './Dialog';
