@@ -14,7 +14,7 @@ import DataContext from '../contexts/DataContext';
 //a little longer. The pieces of data needed to render the header are:  1) data coming from the context
 //2) addNew flag whether or not the Add dialog is shown(when the user clicks the Add button)
 //we use useContext() hook to get access to the value prop passed by the <DataContext.Provider>. It's an object
-//that has a data property and a functin updateData().
+//that has a data property and a function updateData().
 //the header can access all of the data and get the count from (data.length). 
 //The helper functions here: onAdd() and saveNew(). The job of saveNew() is to gather the new record from the
 //form and add it to data. 

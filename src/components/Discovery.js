@@ -16,8 +16,26 @@ import Header from './Header';
 import ExcelF from './ExcelF';
 
 import schema from '../config/schema';
+import DataContext from '../contexts/DataContext';
 
-
+function ExcelExample() {
+    const initialData = schema.name.samples.map(( _, idx) => {
+        const element = {};
+        for (let key in schema) {
+            element[key] = schema[key].samples[idx];
+        }
+        return element;
+    });
+    const [data, setData] = useState(initialData);
+    function updateData(newData) {
+        setData(newData);
+    }
+    return (
+        <DataContext.Provider value={{ data, updateData }}>
+            <ExcelF />
+        </DataContext.Provider>
+    )
+}
 
 //Generic dialog  for any sort of messages
 function DialogExample() {
@@ -57,6 +75,9 @@ function DialogExample() {
     )
 };
 
+//the Header only worries about the data.length count in V2.
+//wrapping the Header in a provider causes the value to be used in the context and not the defaults from createContext().
+//updateData: () => {} is a no-op so that the "Add" button in the header is testable.
 function Discovery() {
     const form = useRef(); // add
     return (
@@ -66,11 +87,14 @@ function Discovery() {
                 <Logo />
             </div>
             <h2>Header</h2>
-            <Header
+            <DataContext.Provider value={{data: [1,2,3], updateData: () => {}}}>
+                <Header onSearch={(e) => console.log(e)} />
+            </DataContext.Provider>
+            {/* <Header
                 onSearch={(e) => console.log(e)}
                 onAdd={() => alert('add')}
                 count={2}
-            />
+            /> */}
 
             <h2>Body</h2>
             <Body>Content</Body>
@@ -200,6 +224,9 @@ function Discovery() {
                     console.log(data);
                 }}
             />
+
+            <h2> ExcelExample</h2>
+            <ExcelExample />
         </div>
     );
 }
