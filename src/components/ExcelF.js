@@ -268,15 +268,14 @@
 
 // export default ExcelF;
 
-// import {useState, useRef, useContext, useEffect, useCallback} from 'react';
-import {useState, useRef, useContext, useCallback} from 'react';
+import {useState, useRef, useContext, useEffect, useCallback} from 'react';
 
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import clone from '../modules/clone';
 import schema from '../config/schema';
 import DataContext from '../contexts/DataContext';
-// import RouteContext from '../contexts/RouteContext';
+import RouteContext from '../contexts/RouteContext';
 
 import './Excel.css';
 import Actions from './Actions';
@@ -320,7 +319,7 @@ function dataMangler(data, action, payload) {
 
 function Excel({filter}) {
   const {data, updateData} = useContext(DataContext); //when Excel tries to use the context, it gets the default data and updateData() as defined in createContext();
-//   const {route, updateRoute} = useContext(RouteContext);
+  const {route, updateRoute} = useContext(RouteContext);
   const [sorting, setSorting] = useState({
     column: '',
     descending: false,
@@ -365,8 +364,19 @@ function Excel({filter}) {
       }),
     );
   }
-
-  const handleAction = useCallback(
+  // this handleAction() helper responsible for opening and closing dialogs as well as for the content of the dialogs.
+  //this helper can be used for the purposes of routing as long as it's invoked with the corrent arguments. This is also
+  //responsible for reading the routing info and creating the correct dialog. It is also for updating the URL on user actions.
+  //do it by adding updateRoute() inside Dialog to clean up the URL.
+  //w/ the help of useEffect(), this helper can be called when the data table renders and the result is opening a 
+  //dialog whenever the URL is /edit/[ID] or /info/[ID]
+  //useCallback: Since handleAction() is an inline function inside ExcelF(), this means every time ExcelF() is invoked
+  //to rerender, a new handleAction() is created.The useCallback() hook memorizes a cb function with its dependencies.
+  //so if a new handleAction() is created on a rerender of Excel, but its dependencies have not changed, then there's no
+  //need for useEffect() to see a new dependency. The old memorized handleAction should do the trick. Wrapping the 
+  //handleAction with a useCallback() should look somewhat familiar to useEffect() where the pattern is: first argument
+  //is a function, the second is an array of dependencies. const handleAction = useCallback((rowidx, type) => {//...}, [data, updateData, updateRoute],)
+  const handleAction = useCallback(       
     (rowidx, type) => {
       if (type === 'delete') {
         setDialog(
@@ -392,7 +402,7 @@ function Excel({filter}) {
       const isEdit = type === 'edit';
       if (type === 'info' || isEdit) {
         const formPrefill = data[rowidx];
-        // updateRoute(type, rowidx);
+        updateRoute(type, rowidx); //makes the URL e.g., /edit/3
         setDialog(
           <Dialog
             modal
@@ -402,7 +412,7 @@ function Excel({filter}) {
             hasCancel={isEdit}
             onAction={(action) => {
               setDialog(null);
-            //   updateRoute();
+              updateRoute();
               if (isEdit && action === 'confirm') {
                 updateData(
                   dataMangler(data, 'saveForm', {
@@ -422,19 +432,18 @@ function Excel({filter}) {
           </Dialog>,
         );
       }
-    },
-    // [data, updateData, updateRoute],
-    [data, updateData,],
-
+    }, [data, updateData, updateRoute],
   );
 
-//   useEffect(() => {
-//     if (route.edit !== null && route.edit < data.length) {
-//       handleAction(route.edit, 'edit');
-//     } else if (route.info !== null && route.info < data.length) {
-//       handleAction(route.info, 'info');
-//     }
-//   }, [route, handleAction, data]);
+  //Check for data.length to prevent opening the dialog with IDs that are out of range (e.g., cannot edit ID 5 when
+  //only 3 records exist). 
+  useEffect(() => {
+    if (route.edit !== null && route.edit < data.length) {
+      handleAction(route.edit, 'edit');
+    } else if (route.info !== null && route.info < data.length) {
+      handleAction(route.info, 'info');
+    }
+  }, [route, handleAction, data]);
 
   return (
     <div className="Excel">
