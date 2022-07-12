@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/red-wine/static/css/main.0b8a8d72.css",
+    "main.js": "/red-wine/static/js/main.89ea2eb0.js",
+    "static/media/wine-corks.jpg": "/red-wine/static/media/wine-corks.9078a64ca00d64db8018.jpg",
+    "static/media/edit.png": "/red-wine/static/media/edit.c620a0976d59fd9d841a.png",
+    "static/media/closed.png": "/red-wine/static/media/closed.f6ed27575e85758c8aa2.png",
+    "static/media/logo-grapeMT.png": "/red-wine/static/media/logo-grapeMT.ec366e143e4257037abb.png",
+    "index.html": "/red-wine/index.html",
+    "main.0b8a8d72.css.map": "/red-wine/static/css/main.0b8a8d72.css.map",
+    "main.89ea2eb0.js.map": "/red-wine/static/js/main.89ea2eb0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0b8a8d72.css",
+    "static/js/main.89ea2eb0.js"
+  ]
+}
