@@ -277,7 +277,7 @@ import schema from '../config/schema';
 import DataContext from '../contexts/DataContext';
 import RouteContext from '../contexts/RouteContext';
 
-import './Excel.css';
+import './ExcelF.css';
 import Actions from './Actions';
 import Dialog from './Dialog';
 import Form from './Form';
@@ -317,7 +317,7 @@ function dataMangler(data, action, payload) {
   return data;
 }
 
-function Excel({filter}) {
+function ExcelF({filter}) {
   const {data, updateData} = useContext(DataContext); //when Excel tries to use the context, it gets the default data and updateData() as defined in createContext();
   const {route, updateRoute} = useContext(RouteContext);
   const [sorting, setSorting] = useState({
@@ -446,7 +446,7 @@ function Excel({filter}) {
   }, [route, handleAction, data]);
 
   return (
-    <div className="Excel">
+    <div className="ExcelF">
       <table>
         <thead onClick={sort}>
           <tr>
@@ -537,7 +537,7 @@ function Excel({filter}) {
   );
 }
 
-Excel.propTypes = {
+ExcelF.propTypes = {
   filter: PropTypes.string,
 };
-export default Excel;
+export default ExcelF;
