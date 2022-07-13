@@ -70,7 +70,7 @@ function Header({ onSearch }) {
                         defaultValue={route.filter} />
                 </div>
                 <div>
-                    <Button onClick={onAdd}> <b>&#65291;</b> Add wine </Button>
+                    <Button className="primary" onClick={onAdd}> <b>&#65291;</b> Add wine </Button>
                 </div>
             </div>
             {addNew ? (
