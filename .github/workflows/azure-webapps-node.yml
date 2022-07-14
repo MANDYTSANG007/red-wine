@@ -24,7 +24,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: your-app-name    # set this to your application's name
+  AZURE_WEBAPP_NAME: mt-red-winery    # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '14.x'                # set this to the node version to use
 
@@ -36,6 +36,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        ref: main
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -49,11 +52,18 @@ jobs:
         npm run build --if-present
         npm run test --if-present
 
+    #Zip the build directory
+    - name: Zip Release
+      uses: TheDoctor0/zip-release@0.6.2
+      with:
+        filename: release.zip
+        path: ./build/*
+    
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v3
       with:
         name: node-app
-        path: .
+        path: release.zip
 
   deploy:
     permissions:
